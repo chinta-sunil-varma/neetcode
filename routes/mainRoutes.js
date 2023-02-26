@@ -7,6 +7,6 @@ router.get('/',(req,res)=>
 })
 router.get('/:name',(req,res)=>
 {
-    res.send(`your name is ${req.params.name}`)
+    res.send(`your updated name is ${req.params.name}`)
 })
 module.exports=router
