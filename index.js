@@ -1,17 +1,34 @@
 const express = require('express');
 const path = require('path');
-const routes = require('./routes/mainRoutes');
+// const db = require('./database/db');
+const mongoose = require('mongoose');
+require('dotenv').config()
+mongoose.set('strictQuery',false)
+// const routes = require('./routes/mainRoutes');
 const app = express()
 
-app.use('/',routes)
+// app.use('/',routes)
 app.use(express.static('frontend'))
-app.set('views',path.join(__dirname,'frontend/'))
+app.set('viewsi',path.join(__dirname,'frontend/'))
 app.get('/html',(req,res)=>
 {
-    console.log(app.get('views'))
-    res.sendFile(app.get('views')+'index.html')
+    console.log(app.get('viewsi'))
+    
+    res.sendFile(app.get('viewsi')+'index.html')
 })
-app.listen(5000,()=>
+mongoose.connect(process.env.MONGO_CONNECTION_STRING,(err)=>
 {
-    console.log('server started')
+    if(err)
+    {
+        console.log('falied to connect to db');
+    }
+    else
+    {
+        
+        app.listen(5000,()=>
+        {
+            console.log('server started')
+        })
+    }
 })
+
