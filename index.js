@@ -4,6 +4,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 require('dotenv').config()
 mongoose.set('strictQuery',false)
+const courseLib = require('./database/lib/courseLib');
 // const routes = require('./routes/mainRoutes');
 const app = express()
 
@@ -16,7 +17,7 @@ app.get('/html',(req,res)=>
     
     res.sendFile(app.get('viewsi')+'index.html')
 })
-mongoose.connect(process.env.MONGO_CONNECTION_STRING,(err)=>
+mongoose.connect(process.env.MONGO_CONNECTION_STRING,async (err)=>
 {
     if(err)
     {
@@ -24,7 +25,12 @@ mongoose.connect(process.env.MONGO_CONNECTION_STRING,(err)=>
     }
     else
     {
-        
+
+        console.log('database connected')
+
+        await courseLib.insertFirstCourse();
+        console.log('inserted')
+
         app.listen(5000,()=>
         {
             console.log('server started')
